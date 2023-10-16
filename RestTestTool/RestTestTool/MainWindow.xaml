@@ -1,0 +1,40 @@
+﻿<Window x:Class="RestTestTool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RestTestTool"
+        mc:Ignorable="d"
+        Title="RestTestTool" Height="311.333" Width="800">
+    <Grid Height="269" Margin="0,0,0.333,0" VerticalAlignment="Top">
+        <TextBox x:Name="uriText" HorizontalAlignment="Left" Height="26" Margin="122,28,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="554" />
+        <Label x:Name="uriLabel" Content="URI" HorizontalAlignment="Left" Margin="52,28,0,0" VerticalAlignment="Top" RenderTransformOrigin="-5.645,-2.676"/>
+        <Label x:Name="methodLabel" Content="Method" HorizontalAlignment="Left" Margin="52,62,0,0" VerticalAlignment="Top" RenderTransformOrigin="-5.645,-2.676"/>
+        <ComboBox x:Name="methodComboBox" HorizontalAlignment="Left" Margin="122,65,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem Content="GET"/>
+            <ComboBoxItem Content="POST"/>
+            <!--<ComboBoxItem Content="PUT"/>
+            <ComboBoxItem Content="DELETE"/>
+            <ComboBoxItem Content="PATCH"/>-->
+        </ComboBox>
+        <Label x:Name="param1NameLabel" Content="パラメータ名1" HorizontalAlignment="Left" Margin="52,93,0,0" VerticalAlignment="Top" RenderTransformOrigin="-5.645,-2.676"/>
+        <Label x:Name="param2NameLabel" Content="パラメータ名2" HorizontalAlignment="Left" Margin="52,124,0,0" VerticalAlignment="Top" RenderTransformOrigin="-5.645,-2.676"/>
+        <Label x:Name="param3NameLabel" Content="パラメータ名3" HorizontalAlignment="Left" Margin="52,155,0,0" VerticalAlignment="Top" RenderTransformOrigin="-5.645,-2.676"/>
+        <Label x:Name="param4NameLabel" Content="パラメータ名4" HorizontalAlignment="Left" Margin="52,186,0,0" VerticalAlignment="Top" RenderTransformOrigin="-5.645,-2.676"/>
+        <TextBox x:Name="paramNameText1" HorizontalAlignment="Left" Height="26" Margin="140,93,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="228" />
+        <TextBox x:Name="paramNameText2" HorizontalAlignment="Left" Height="26" Margin="140,124,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="228" />
+        <TextBox x:Name="paramNameText3" HorizontalAlignment="Left" Height="26" Margin="140,155,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="228" />
+        <TextBox x:Name="paramNameText4" HorizontalAlignment="Left" Height="26" Margin="140,186,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="228" />
+        <Label x:Name="param1Label" Content="パラメータ1" HorizontalAlignment="Left" Margin="400,93,0,0" VerticalAlignment="Top" RenderTransformOrigin="-5.645,-2.676"/>
+        <Label x:Name="param2Label" Content="パラメータ2" HorizontalAlignment="Left" Margin="400,124,0,0" VerticalAlignment="Top" RenderTransformOrigin="-5.645,-2.676"/>
+        <Label x:Name="param3Label" Content="パラメータ3" HorizontalAlignment="Left" Margin="400,155,0,0" VerticalAlignment="Top" RenderTransformOrigin="-5.645,-2.676"/>
+        <Label x:Name="param4Label" Content="パラメータ4" HorizontalAlignment="Left" Margin="400,186,0,0" VerticalAlignment="Top" RenderTransformOrigin="-5.645,-2.676"/>
+        <TextBox x:Name="paramText1" HorizontalAlignment="Left" Height="26" Margin="480,93,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="228" />
+        <TextBox x:Name="paramText2" HorizontalAlignment="Left" Height="26" Margin="480,124,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="228" />
+        <TextBox x:Name="paramText3" HorizontalAlignment="Left" Height="26" Margin="480,155,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="228" />
+        <TextBox x:Name="paramText4" HorizontalAlignment="Left" Height="26" Margin="480,186,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="228" />
+        <Button x:Name="requestForm" Content="実行" HorizontalAlignment="Left" Margin="52,223,0,0" VerticalAlignment="Top" Width="75" Click="RequestForm_Click"/>
+
+
+    </Grid>
+</Window>
