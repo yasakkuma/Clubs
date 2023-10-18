@@ -75,11 +75,18 @@ namespace RestTestTool
                         json = response.Content.ReadAsStringAsync().Result;
                     }
                 });
-                task.Wait();
+                while (!task.IsCompleted)
+                {
+                    Task.Delay(1000);
+                }
                 return true;
             } catch (Exception e)
             {
                 json = e.Message + e.StackTrace;
+                while (e.InnerException != null)
+                {
+                    json += "\n" + e.Message + e.StackTrace;
+                }
                 return false;
             }
         }
@@ -107,12 +114,19 @@ namespace RestTestTool
                         json = response.Content.ReadAsStringAsync().Result;
                     }
                 });
-                task.Wait();
+                while (!task.IsCompleted)
+                {
+                    Task.Delay(1000);
+                }
                 return true;
             }
             catch (Exception e)
             {
                 json = e.Message + e.StackTrace;
+                while (e.InnerException != null)
+                {
+                    json += "\n" + e.Message + e.StackTrace;
+                }
                 return false;
             }
         }
