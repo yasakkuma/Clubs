@@ -19,7 +19,7 @@ namespace RestTestTool
             uriText.Text = Properties.Settings.Default.DEFAULT_URI;
         }
 
-        private void RequestForm_Click(object sender, RoutedEventArgs e)
+        private async void RequestForm_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace RestTestTool
                 switch (methodComboBox.SelectedIndex)
                 {
                     case (int)MethodType.Get:
-                        if (model.DoGet(uriText.Text, paramsDic))
+                        if (await model.DoGet(uriText.Text, paramsDic))
                         {
                             var dialog = new SaveFileDialog();
                             dialog.Filter = "JSONファイル|*.json";
@@ -58,7 +58,7 @@ namespace RestTestTool
 
                         break;
                     case (int)MethodType.Post:
-                        if (model.DoPost(uriText.Text, paramsDic))
+                        if (await model.DoPost(uriText.Text, paramsDic))
                         {
                             var dialog = new SaveFileDialog();
                             dialog.Filter = "JSONファイル|*.json";

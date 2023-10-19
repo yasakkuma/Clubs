@@ -18,6 +18,7 @@ namespace RestTestTool
         [DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileStringW", CharSet = CharSet.Unicode, SetLastError = true)]
         static extern uint GetPrivateProfileString(string lpAppName, string lpKeyName, string lpDefault, StringBuilder lpReturnedString, uint nSize, string lpFileName);
 
+        public event EventHandler TaskEndEvent;
         /// <summary>
         /// PROXY設定がある場合は設定
         /// </summary>
@@ -60,7 +61,7 @@ namespace RestTestTool
         /// <param name="uri"></param>
         /// <param name="paramsDic"></param>
         /// <returns></returns>
-        public bool DoGet(string uri, Dictionary<string, string> paramsDic)
+        public async Task<bool> DoGet(string uri, Dictionary<string, string> paramsDic)
         {
             try
             {
@@ -68,18 +69,11 @@ namespace RestTestTool
                 HttpClientHandler handler = new HttpClientHandler() { UseProxy = false };
                 handler = SetProxy(handler);
 
-                var task = Task.Run(() =>
+                using (var client = new HttpClient(handler))
                 {
-                    using (var client = new HttpClient(handler))
-                    {
-                        var getTask = client.GetAsync(uri);
-                        while (!getTask.IsCompleted) Task.Delay(100);
-                        var resultTask = getTask.Result.Content.ReadAsStringAsync();
-                        while (!resultTask.IsCompleted) Task.Delay(100);
-                        json = resultTask.Result;
-                    }
-                });
-                while (!task.IsCompleted) Task.Delay(100);
+                    var response = await client.GetAsync(uri);
+                    json = await response.Content.ReadAsStringAsync();
+                }
 
                 return true;
             } catch (Exception e)
@@ -99,7 +93,7 @@ namespace RestTestTool
         /// <param name="uri"></param>
         /// <param name="paramsDic"></param>
         /// <returns></returns>
-        public bool DoPost(string uri, Dictionary<string, string> paramsDic)
+        public async Task<bool> DoPost(string uri, Dictionary<string, string> paramsDic)
         {
             try
             {
@@ -107,19 +101,12 @@ namespace RestTestTool
                 HttpClientHandler handler = new HttpClientHandler() { UseProxy = false };
                 handler = SetProxy(handler);
 
-                var task = Task.Run(() =>
+                using (var client = new HttpClient(handler))
                 {
-                    using (var client = new HttpClient(handler))
-                    {
-                        var content = new FormUrlEncodedContent(paramsDic);
-                        var postTask = client.PostAsync(uri, content);
-                        while (!postTask.IsCompleted) Task.Delay(100);
-                        var resultTask = postTask.Result.Content.ReadAsStringAsync();
-                        while (!resultTask.IsCompleted) Task.Delay(100);
-                        json = resultTask.Result;
-                    }
-                });
-                while (!task.IsCompleted) Task.Delay(100);
+                    var content = new FormUrlEncodedContent(paramsDic);
+                    var response = await client.PostAsync(uri, content);
+                    json = await response.Content.ReadAsStringAsync();
+                }
                 return true;
             }
             catch (Exception e)
