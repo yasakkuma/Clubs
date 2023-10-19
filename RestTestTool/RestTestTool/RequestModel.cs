@@ -21,10 +21,10 @@ namespace RestTestTool
         /// <summary>
         /// PROXY設定がある場合は設定
         /// </summary>
-        public void SetProxy(HttpClientHandler handler)
+        public HttpClientHandler SetProxy(HttpClientHandler handler)
         {
             FileInfo proxyini = new FileInfo(Consts.PROXY_FILE);
-            if (!proxyini.Exists) return;
+            if (!proxyini.Exists) return handler;
             
             string user = GetIniValue(proxyini, Consts.PROXY_SECTION_NAME, Consts.USER_KEY_NAME, string.Empty);
             string password = GetIniValue(proxyini, Consts.PROXY_SECTION_NAME, Consts.PASSWORD_KEY_NAME, string.Empty);
@@ -32,10 +32,11 @@ namespace RestTestTool
 
             if (!string.IsNullOrEmpty(user) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(proxyUrl))
             {
+                handler.UseProxy = true;
                 handler.Proxy = new WebProxy(proxyUrl);
                 handler.Proxy.Credentials = new NetworkCredential(user, password);
-                handler.UseProxy = true;
             }
+            return handler;
         }
 
         /// <summary>
@@ -65,20 +66,21 @@ namespace RestTestTool
             {
                 json = string.Empty;
                 HttpClientHandler handler = new HttpClientHandler() { UseProxy = false };
-                SetProxy(handler);
+                handler = SetProxy(handler);
 
                 var task = Task.Run(() =>
                 {
                     using (var client = new HttpClient(handler))
                     {
-                        var response = client.GetAsync(uri).Result;
-                        json = response.Content.ReadAsStringAsync().Result;
+                        var getTask = client.GetAsync(uri);
+                        while (!getTask.IsCompleted) Task.Delay(100);
+                        var resultTask = getTask.Result.Content.ReadAsStringAsync();
+                        while (!resultTask.IsCompleted) Task.Delay(100);
+                        json = resultTask.Result;
                     }
                 });
-                while (!task.IsCompleted)
-                {
-                    Task.Delay(1000);
-                }
+                while (!task.IsCompleted) Task.Delay(100);
+
                 return true;
             } catch (Exception e)
             {
@@ -103,21 +105,21 @@ namespace RestTestTool
             {
                 json = string.Empty;
                 HttpClientHandler handler = new HttpClientHandler() { UseProxy = false };
-                SetProxy(handler);
+                handler = SetProxy(handler);
 
                 var task = Task.Run(() =>
                 {
                     using (var client = new HttpClient(handler))
                     {
                         var content = new FormUrlEncodedContent(paramsDic);
-                        var response = client.PostAsync(uri, content).Result;
-                        json = response.Content.ReadAsStringAsync().Result;
+                        var postTask = client.PostAsync(uri, content);
+                        while (!postTask.IsCompleted) Task.Delay(100);
+                        var resultTask = postTask.Result.Content.ReadAsStringAsync();
+                        while (!resultTask.IsCompleted) Task.Delay(100);
+                        json = resultTask.Result;
                     }
                 });
-                while (!task.IsCompleted)
-                {
-                    Task.Delay(1000);
-                }
+                while (!task.IsCompleted) Task.Delay(100);
                 return true;
             }
             catch (Exception e)
