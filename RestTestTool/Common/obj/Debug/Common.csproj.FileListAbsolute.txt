@@ -1,0 +1,5 @@
+C:\develop\Clubs\RestTestTool\Common\bin\Debug\Common.dll
+C:\develop\Clubs\RestTestTool\Common\bin\Debug\Common.pdb
+C:\develop\Clubs\RestTestTool\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+C:\develop\Clubs\RestTestTool\Common\obj\Debug\Common.dll
+C:\develop\Clubs\RestTestTool\Common\obj\Debug\Common.pdb

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,13 +11,16 @@ namespace RestTestTool
 {
     public class RequestModel
     {
+        /// <summary>
+        /// JSON戻り値
+        /// </summary>
         public string json = string.Empty;
 
+        /// <summary>
+        /// PROXY設定ファイル
+        /// </summary>
+        public ProxyIni proxyIni;
 
-        [DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileStringW", CharSet = CharSet.Unicode, SetLastError = true)]
-        static extern uint GetPrivateProfileString(string lpAppName, string lpKeyName, string lpDefault, StringBuilder lpReturnedString, uint nSize, string lpFileName);
-
-        public event EventHandler TaskEndEvent;
         /// <summary>
         /// PROXY設定がある場合は設定
         /// </summary>
@@ -26,10 +28,10 @@ namespace RestTestTool
         {
             FileInfo proxyini = new FileInfo(Consts.PROXY_FILE);
             if (!proxyini.Exists) return handler;
-            
-            string user = GetIniValue(proxyini, Consts.PROXY_SECTION_NAME, Consts.USER_KEY_NAME, string.Empty);
-            string password = GetIniValue(proxyini, Consts.PROXY_SECTION_NAME, Consts.PASSWORD_KEY_NAME, string.Empty);
-            string proxyUrl = GetIniValue(proxyini, Consts.PROXY_SECTION_NAME, Consts.PROXY_URL_KEY_NAME, string.Empty);
+
+            string user = proxyIni.ProxyUser;
+            string password = proxyIni.ProxyPassword;
+            string proxyUrl = proxyIni.ProxyUrl;
 
             if (!string.IsNullOrEmpty(user) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(proxyUrl))
             {
@@ -38,21 +40,6 @@ namespace RestTestTool
                 handler.Proxy.Credentials = new NetworkCredential(user, password);
             }
             return handler;
-        }
-
-        /// <summary>
-        /// INIファイルから指定したキーを取得
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="section"></param>
-        /// <param name="key"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns></returns>
-        private string GetIniValue(FileInfo file , string section, string key, string defaultValue)
-        {
-            StringBuilder sb = new StringBuilder(256);
-            GetPrivateProfileString(section, key, defaultValue, sb, 256, file.FullName);
-            return sb.ToString();
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Common;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,11 +13,13 @@ namespace RestTestTool
     public partial class MainWindow : Window
     {
         Dictionary<string, string> paramsDic = new Dictionary<string, string>();
+        public static ProxyIni proxyIni;
         RequestModel model = new RequestModel();
         public MainWindow()
         {
             InitializeComponent();
             uriText.Text = Properties.Settings.Default.DEFAULT_URI;
+            model.proxyIni = IniFile.ReadIni<ProxyIni>(new FileInfo(Consts.PROXY_FILE));
         }
 
         private async void RequestForm_Click(object sender, RoutedEventArgs e)
@@ -49,7 +52,6 @@ namespace RestTestTool
                             {
                                 File.WriteAllText(dialog.FileName, model.json);
                             }
-
                         }
                         else
                         {
